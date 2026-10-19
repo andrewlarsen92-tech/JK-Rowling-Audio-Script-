@@ -1,0 +1,702 @@
+<!-- Needs vs. Wants video lesson - paste into a Teachable code block.
+     Images: upload the nw-*.webp files to Shopify Files. Audio: Shopify Files MP3 (AUDIO_SRC below), GitHub as backup. -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Cinzel:wght@700;900&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+#nwl{
+  --bg1:#2a1457;--bg2:#4a2490;--parch:#fbf1d6;--parch2:#f3e2b3;
+  --ink:#2a1457;--ink-soft:#5b4a86;--gold:#f6c33b;--gold-deep:#c9921a;
+  --need:#2f9e5b;--need-soft:#d6f2e0;--want:#e8542f;--want-soft:#ffe0d6;--good:#2f9e5b;--oops:#d6453d;
+}
+#nwl,#nwl *{box-sizing:border-box;margin:0;padding:0}
+#nwl{width:100%;max-width:1280px;margin:0 auto;font-family:"Nunito",system-ui,sans-serif;color:#2a1457}
+#nwl #wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#120a28;border-radius:14px}
+#nwl #stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:top left;background:radial-gradient(ellipse at 50% 20%,var(--bg2),var(--bg1) 75%);overflow:hidden;}
+#nwl .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 12% 18%,#fff8,transparent),radial-gradient(2px 2px at 78% 12%,#fff8,transparent),radial-gradient(3px 3px at 90% 60%,#f6c33b99,transparent),radial-gradient(2px 2px at 30% 80%,#fff7,transparent),radial-gradient(3px 3px at 55% 35%,#f6c33b77,transparent),radial-gradient(2px 2px at 6% 62%,#fff7,transparent);pointer-events:none}
+#nwl .scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s .6s}
+#nwl .scene.active{opacity:1;visibility:visible;transition:opacity .6s ease}
+#nwl /* pop-in system */
+.pop{position:absolute;opacity:0;transform:scale(.3) translateY(30px);transition:opacity .35s ease,transform .55s cubic-bezier(.3,1.7,.5,1);transform-origin:50% 100%}
+#nwl .pop.on{opacity:1;transform:scale(1) translateY(0)}
+#nwl .pop.slide-l{transform:translateX(-120px)}
+#nwl .pop.slide-r{transform:translateX(120px)}
+#nwl .pop.slide-u{transform:translateY(-100px)}
+#nwl .pop.slide-l.on,#nwl .pop.slide-r.on,#nwl .pop.slide-u.on{transform:none}
+#nwl .fade{position:absolute;opacity:0;transition:opacity .6s ease}
+#nwl .fade.on{opacity:1}
+#nwl .bob.on img.spr,#nwl .bob.on>img{animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+#nwl img.spr{display:block;height:100%;width:auto;filter:drop-shadow(0 8px 0 #0003)}
+#nwl /* cards */
+.card{background:var(--parch);border:5px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:18px 26px}
+#nwl .card.need{background:var(--need-soft);border-color:#14502d;box-shadow:8px 8px 0 #14502d}
+#nwl .card.want{background:var(--want-soft);border-color:#7a2410;box-shadow:8px 8px 0 #7a2410}
+#nwl .h{font-family:'Cinzel',serif;font-weight:900;letter-spacing:.5px;color:var(--ink);line-height:1.1}
+#nwl .gold{color:var(--gold)}
+#nwl .white{color:#fff}
+#nwl .big{font-family:'Baloo 2',sans-serif;font-weight:800}
+#nwl .title-xl{font-family:'Cinzel',serif;font-weight:900;color:#fff;text-shadow:5px 5px 0 var(--ink),0 0 30px #f6c33b55;line-height:1.05}
+#nwl .tag{display:inline-block;font-family:'Baloo 2';font-weight:800;border:4px solid var(--ink);border-radius:999px;padding:2px 22px;background:var(--gold);color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
+#nwl .icn{display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'Baloo 2';font-weight:800;font-size:26px;color:var(--ink)}
+#nwl .icn svg{width:110px;height:110px;background:#fff;border:5px solid var(--ink);border-radius:24px;padding:12px;box-shadow:6px 6px 0 var(--ink)}
+#nwl .need .icn,#nwl .want .icn,#nwl .icn.wt{color:#fff;text-shadow:3px 3px 0 var(--ink);text-align:center;line-height:1.05;max-width:210px}
+#nwl .need .icn.pop,#nwl .want .icn.pop{position:relative}
+#nwl .hov.on svg{animation:bob 2.6s ease-in-out infinite}
+#nwl .need .icn svg{border-color:#14502d;box-shadow:6px 6px 0 #14502d}
+#nwl .want .icn svg{border-color:#7a2410;box-shadow:6px 6px 0 #7a2410}
+#nwl .floor{position:absolute;left:0;right:0;bottom:0;height:96px;background:linear-gradient(#3b1d78,#2a1457);border-top:6px solid var(--gold)}
+#nwl .bubble{position:absolute;background:#fff;border:5px solid var(--ink);border-radius:26px;box-shadow:6px 6px 0 var(--ink);padding:12px 22px;font-family:'Baloo 2';font-weight:800;font-size:30px;color:var(--ink)}
+#nwl .bubble:after{content:"";position:absolute;left:34px;bottom:-24px;border:14px solid transparent;border-top:20px solid var(--ink)}
+#nwl .bubble.r:after{left:auto;right:34px}
+#nwl .coin{position:absolute;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe27a,var(--gold) 55%,var(--gold-deep));border:4px solid #8a5d08;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2';font-weight:800;font-size:34px;color:#8a5d08}
+#nwl /* captions + controls */
+#cap{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);width:max-content;max-width:1100px;text-align:center;font-family:'Nunito';font-weight:800;font-size:23px;line-height:1.25;color:#fff;background:#120a28d9;border:3px solid #f6c33b66;border-radius:16px;padding:10px 22px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:20}
+#nwl #cap.show{opacity:1}
+#nwl #bar{position:absolute;left:0;right:0;bottom:0;height:50px;background:#120a28ee;display:flex;align-items:center;gap:12px;padding:0 16px;z-index:30;border-top:3px solid var(--gold)}
+#nwl #bar button{font-family:'Baloo 2';font-weight:800;font-size:18px;color:var(--ink);background:var(--gold);border:3px solid var(--ink);border-radius:12px;padding:0 14px;height:34px;cursor:pointer;box-shadow:3px 3px 0 #0008}
+#nwl #bar button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0008}
+#nwl #prog{flex:1;position:relative;height:16px;background:#ffffff22;border-radius:10px;cursor:pointer;border:2px solid #f6c33b66}
+#nwl #fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#f6c33b,#ffe27a);border-radius:10px}
+#nwl .tick{position:absolute;top:-4px;bottom:-4px;width:3px;background:#fff9}
+#nwl #time{font-family:'Baloo 2';font-weight:600;color:#fff;font-size:16px;min-width:92px;text-align:right}
+#nwl #start{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:radial-gradient(ellipse at 50% 30%,#4a2490ee,#1b0d3bf5);cursor:pointer}
+#nwl #start.hide{display:none}
+#nwl #start .playbtn{width:120px;height:120px;border-radius:50%;background:var(--gold);border:6px solid var(--ink);box-shadow:8px 8px 0 var(--ink);display:flex;align-items:center;justify-content:center}
+#nwl #start .playbtn:after{content:"";margin-left:12px;border-left:42px solid var(--ink);border-top:28px solid transparent;border-bottom:28px solid transparent}
+#nwl canvas#fx{position:absolute;inset:0;pointer-events:none;z-index:15}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes fall{from{transform:translateY(-140px);opacity:0}15%{opacity:1}to{transform:translateY(0);opacity:1}}
+@keyframes drain{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.5);opacity:0}}
+@keyframes fly{0%{transform:translate(0,0) rotate(-8deg)}25%{transform:translate(60px,-70px) rotate(8deg)}50%{transform:translate(-40px,-110px) rotate(-6deg)}75%{transform:translate(70px,-60px) rotate(8deg)}100%{transform:translate(0,0) rotate(-8deg)}}
+#nwl .pulse.on{animation:pulse 1.4s ease-in-out infinite}
+#nwl .shake.on{animation:shake .5s ease-in-out 2}
+#nwl .drain.on{animation:drain 1.6s ease-in forwards}
+#nwl .fly.on{animation:fly 3s ease-in-out 1}
+#nwl .spin.on{animation:spin 8s linear infinite}
+@media (prefers-reduced-motion:reduce){#nwl .bob.on img{animation:none!important}
+#nwl .pulse.on,#nwl .spin.on{animation:none!important}}
+#nwl #start .startbtn{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:36px;color:#2a1457;background:#f6c33b;border:5px solid #2a1457;border-radius:999px;padding:6px 54px;box-shadow:6px 6px 0 #2a1457}
+#nwl #start .startbtn:hover{transform:translate(2px,2px);box-shadow:4px 4px 0 #2a1457}
+</style>
+<div id="nwl"><div id="wrap"><div id="stage">
+<div class="stars"></div>
+
+<!-- ===== SCENE 0: Welcome / bartering recap ===== -->
+<section class="scene" data-scene="0">
+  <div class="pop slide-l bob" data-l="0" style="left:40px;top:150px;height:380px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-0.webp"></div>
+  <div class="pop" data-l="0" data-d="0.3" style="left:430px;top:70px"><div class="title-xl" style="font-size:66px">Welcome back,<br><span class="gold">Future Money Masters!</span></div></div>
+  <div class="pop bob" data-l="1" style="left:470px;top:300px;height:230px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-all-4.webp"></div>
+  <div class="pop" data-l="1" data-c="1" data-d="1.4" style="left:790px;top:300px"><div class="bubble" style="font-size:34px">Chickens for bread?!</div></div>
+  <div class="pop" data-l="1" data-c="1" data-d="3.0" style="left:830px;top:410px"><div class="card" style="transform:rotate(3deg);font-family:'Baloo 2';font-weight:800;font-size:28px">Tough &amp; confusing…</div></div>
+  <div class="pop" data-l="2" data-c="1" data-d="0" style="left:380px;top:515px;width:560px;text-align:center"><div class="tag" style="font-size:34px">Money makes life so much easier!</div></div>
+  <div class="coin pop spin" data-l="2" data-c="1" data-d="0.3" style="left:300px;top:505px">$</div>
+  <div class="coin pop spin" data-l="2" data-c="1" data-d="0.6" style="left:950px;top:505px">$</div>
+</section>
+
+<!-- ===== SCENE 1: Celebrate ===== -->
+<section class="scene" data-scene="1">
+  <div class="pop slide-r bob" data-l="0" style="right:50px;top:170px;height:360px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-2.webp"></div>
+  <div class="pop" data-l="0" style="left:70px;top:50px"><div class="title-xl" style="font-size:56px">Let's celebrate!</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="0" style="left:70px;top:150px;width:760px"><div class="big" style="font-size:30px">3 ways your family uses money every week</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="1.3" style="left:70px;top:250px;width:230px;text-align:center"><div class="big" style="font-size:80px;line-height:1">1</div><div class="big" style="font-size:44px;color:var(--gold-deep)">?</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="2.4" style="left:325px;top:250px;width:230px;text-align:center"><div class="big" style="font-size:80px;line-height:1">2</div><div class="big" style="font-size:44px;color:var(--gold-deep)">?</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="3.5" style="left:580px;top:250px;width:230px;text-align:center"><div class="big" style="font-size:80px;line-height:1">3</div><div class="big" style="font-size:44px;color:var(--gold-deep)">?</div></div>
+  <div class="pop card" data-l="1" style="left:70px;top:430px;width:760px"><div class="big" style="font-size:30px">🛒 Goods &amp; 💇 Services — sorted without getting tricked?</div></div>
+  <div class="pop big" data-l="2" style="left:120px;top:515px;font-size:52px;color:var(--gold);text-shadow:4px 4px 0 var(--ink)"> That is awesome work!</div>
+</section>
+
+<!-- ===== SCENE 2: Title ===== -->
+<section class="scene" data-scene="2">
+  <div class="pop slide-l bob" data-l="0" style="left:20px;top:150px;height:400px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-3.webp"></div>
+  <div class="pop" data-l="0" data-d="0.5" style="left:380px;top:50px;width:560px;text-align:center"><div class="tag" style="font-size:30px">Today's main event</div></div>
+  <div class="pop card need" data-l="0" data-c="1" data-d="0" style="left:360px;top:160px;width:310px;text-align:center"><div class="title-xl" style="font-size:56px;color:var(--need);text-shadow:none">NEEDS</div></div>
+  <div class="pop big" data-l="0" data-c="1" data-d="0.7" style="left:672px;top:215px;font-size:70px;color:var(--gold);text-shadow:4px 4px 0 var(--ink)">VS</div>
+  <div class="pop card want" data-l="0" data-c="1" data-d="1.1" style="left:790px;top:160px;width:310px;text-align:center"><div class="title-xl" style="font-size:56px;color:var(--want);text-shadow:none">WANTS</div></div>
+  <div class="pop slide-r bob" data-l="0" data-c="1" data-d="1.5" style="right:30px;top:390px;height:230px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-devil-2.webp"></div>
+  <div class="pop" data-l="0" data-c="0" data-d="4.8" style="left:360px;top:340px;width:720px"><div class="title-xl" style="font-size:44px">The Ultimate<br>Money Arena!</div></div>
+  <div class="fade" data-l="0" data-d="0.2" style="inset:0;background:radial-gradient(circle at 25% 50%,#f6c33b33,transparent 50%)"></div>
+</section>
+
+<!-- ===== SCENE 3: Magical armor ===== -->
+<section class="scene" data-scene="3">
+  <div class="pop slide-l bob" data-l="0" style="left:30px;top:170px;height:380px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-4.webp"></div>
+  <div class="pop card" data-l="0" data-d="0.4" style="left:400px;top:50px;width:780px"><div class="h" style="font-size:36px">Know the difference = a <span style="color:var(--need)">magical armor shield</span> for your brain!</div></div>
+  <div class="pop pulse" data-l="0" data-d="6.5" style="left:520px;top:210px;width:240px;height:290px">
+    <svg viewBox="0 0 200 240" width="100%" height="100%">
+<path d="M100 8 L186 40 V110 C186 170 148 214 100 232 C52 214 14 170 14 110 V40 Z" fill="#2f6fe0" stroke="#2a1457" stroke-width="10" stroke-linejoin="round"/>
+<path d="M100 24 L172 51 V110 C172 162 140 200 100 216 C60 200 28 162 28 110 V51 Z" fill="none" stroke="#f6c33b" stroke-width="5" stroke-linejoin="round"/>
+<g font-family="Baloo 2,Nunito,sans-serif" font-weight="800" font-size="74" text-anchor="middle" fill="#fff" stroke="#2a1457" stroke-width="9" stroke-linejoin="round" paint-order="stroke">
+<text x="60" y="142">N</text>
+<text x="142" y="142">W</text>
+</g>
+<circle cx="101" cy="122" r="7" fill="#f6c33b" stroke="#2a1457" stroke-width="4"/>
+</svg>
+  </div>
+  <div class="pop slide-r" data-l="0" data-d="8.4" style="left:880px;top:260px"><div class="card want" style="font-family:'Baloo 2';font-weight:800;font-size:30px">Impulse buying ✖</div></div>
+  <div class="pop slide-r" data-l="0" data-d="10" style="left:880px;top:370px"><div class="card want" style="font-family:'Baloo 2';font-weight:800;font-size:30px">Wasteful spending ✖</div></div>
+</section>
+
+<!-- ===== SCENE 4: NEEDS ===== -->
+<section class="scene" data-scene="4">
+  <div class="pop slide-l bob" data-l="0" style="left:20px;top:240px;height:300px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-6.webp"></div>
+  <div class="pop" data-l="0" style="left:300px;top:36px"><div class="tag" style="font-size:44px;background:var(--need);color:#fff;border-color:#14502d;box-shadow:5px 5px 0 #14502d">NEEDS</div></div>
+  <div class="pop card need" data-l="0" data-d="0.6" style="left:300px;top:130px;width:940px"><div class="big" style="font-size:30px">Absolute essentials to <b>survive</b>, <b>stay healthy</b> and <b>live safely</b> every single day.</div></div>
+  <div class="need" style="position:absolute;left:300px;top:290px;width:940px;display:flex;justify-content:space-between;padding:0 10px">
+    <div class="pop icn" data-l="1" data-c="0" data-d="1.0" style="position:relative"><svg viewBox="0 0 100 100">
+<path d="M50 10 C50 10 20 46 20 64 a30 30 0 0 0 60 0 C80 46 50 10 50 10Z" fill="#4aa8ff" stroke="#2a1457" stroke-width="5"/>
+<path d="M36 64 a14 14 0 0 0 10 14" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>
+</svg>Water</div>
+    <div class="pop icn" data-l="1" data-c="1" data-d="0" style="position:relative"><svg viewBox="0 0 100 100">
+<circle cx="50" cy="58" r="30" fill="#e8483a" stroke="#2a1457" stroke-width="5"/>
+<path d="M50 30 C50 18 56 12 64 10" stroke="#2a1457" stroke-width="5" fill="none"/>
+<ellipse cx="66" cy="16" rx="12" ry="7" fill="#3fae4c" stroke="#2a1457" stroke-width="4"/>
+</svg>Food</div>
+    <div class="pop icn" data-l="1" data-c="2" data-d="0.6" style="position:relative"><svg viewBox="0 0 100 100">
+<path d="M10 52 L50 16 L90 52" fill="#d9573f" stroke="#2a1457" stroke-width="5" stroke-linejoin="round"/>
+<rect x="20" y="50" width="60" height="38" fill="#ffe3a3" stroke="#2a1457" stroke-width="5"/>
+<rect x="42" y="62" width="16" height="26" fill="#8a5a2b" stroke="#2a1457" stroke-width="4"/>
+</svg>A safe home</div>
+    <div class="pop icn" data-l="1" data-c="3" data-d="0" style="position:relative"><svg viewBox="0 0 100 100">
+<path d="M30 18 L12 34 L22 50 L30 44 V86 H70 V44 L78 50 L88 34 L70 18 L58 26 H42 Z" fill="#3b82f6" stroke="#2a1457" stroke-width="5" stroke-linejoin="round"/>
+</svg>Warm clothes</div>
+    <div class="pop icn" data-l="1" data-c="4" data-d="0.4" style="position:relative"><svg viewBox="0 0 100 100">
+<rect x="14" y="34" width="72" height="34" rx="17" transform="rotate(-35 50 50)" fill="#fff" stroke="#2a1457" stroke-width="5"/>
+<path d="M50 50 L70 22 a17 17 0 0 1 14 12 Z" fill="#e8483a" stroke="#2a1457" stroke-width="5" transform="translate(-8 14) rotate(0)"/>
+</svg>Medicine</div>
+  </div>
+  <div class="pop card need" data-l="2" style="left:300px;top:490px;width:940px;text-align:center"><div class="big" style="font-size:32px">Without these basics, a healthy life is impossible!</div></div>
+</section>
+
+<!-- ===== SCENE 5: WANTS ===== -->
+<section class="scene" data-scene="5">
+  <div class="pop slide-r bob" data-l="0" style="right:20px;top:120px;height:300px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-devil-0.webp"></div>
+  <div class="pop" data-l="0" style="left:50px;top:36px"><div class="tag" style="font-size:44px;background:var(--want);color:#fff;border-color:#7a2410;box-shadow:5px 5px 0 #7a2410">WANTS</div></div>
+  <div class="pop card want" data-l="0" data-d="0.6" style="left:50px;top:130px;width:830px"><div class="big" style="font-size:30px">Extra treats &amp; gadgets we enjoy because they're <b>fun</b>, <b>exciting</b> or <b>stylish</b> — but we don't need them to survive.</div></div>
+  <div class="want" style="position:absolute;left:50px;top:310px;width:850px;display:flex;justify-content:space-between;align-items:flex-start;padding:0 10px">
+    <div class="pop icn" data-l="1" data-c="0" data-d="0.8"><svg viewBox="0 0 100 100">
+<path d="M24 44 H76 L68 70 a18 12 0 0 1-36 0Z" fill="#f4e6ff" stroke="#2a1457" stroke-width="5"/>
+<circle cx="50" cy="32" r="16" fill="#ffb3d1" stroke="#2a1457" stroke-width="5"/>
+<circle cx="50" cy="14" r="6" fill="#e8483a" stroke="#2a1457" stroke-width="3"/>
+<rect x="46" y="70" width="8" height="16" fill="#c9921a"/>
+</svg>Ice cream sundae</div>
+    <div class="pop icn" data-l="1" data-c="1" data-d="0.2"><svg viewBox="0 0 100 100">
+<rect x="8" y="30" width="84" height="42" rx="20" fill="#3b82f6" stroke="#2a1457" stroke-width="5"/>
+<path d="M26 42 v18 M17 51 h18" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+<circle cx="68" cy="45" r="5" fill="#f6c33b"/>
+<circle cx="78" cy="55" r="5" fill="#e8483a"/>
+</svg>New game console</div>
+    <div class="pop icn" data-l="1" data-c="2" data-d="0"><svg viewBox="0 0 100 100">
+<path d="M10 62 C10 42 24 30 36 30 L46 44 L70 50 C84 54 92 60 92 70 V78 H10Z" fill="#ff5e8a" stroke="#2a1457" stroke-width="5" stroke-linejoin="round"/>
+<rect x="10" y="74" width="82" height="10" rx="5" fill="#fff" stroke="#2a1457" stroke-width="4"/>
+<path d="M40 50 l6 -8 M50 54 l6 -8" stroke="#fff" stroke-width="4"/>
+</svg>Flashy sneakers</div>
+    <div class="pop icn" data-l="1" data-c="3" data-d="0.5"><svg viewBox="0 0 100 100">
+<defs>
+<linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#8fd3ff"/>
+<stop offset="1" stop-color="#dff3ff"/>
+</linearGradient>
+</defs>
+<rect x="2" y="2" width="96" height="96" rx="14" fill="url(#skyg)" stroke="none"/>
+<ellipse cx="22" cy="80" rx="16" ry="6" fill="#fff"/>
+<ellipse cx="36" cy="84" rx="14" ry="5" fill="#fff"/>
+<ellipse cx="82" cy="20" rx="12" ry="5" fill="#fff"/>
+<g transform="rotate(-14 50 50)" stroke="#2a1457" stroke-width="2.6" stroke-linejoin="round">
+<path d="M50 44 L58 26 L70 26 L64 44Z" fill="#b9c6dc"/>
+<path d="M6 50 C6 45 12 43 20 43 L76 43 C88 43 96 48 96 52 C96 56 88 60 76 60 L20 60 C12 60 6 56 6 50Z" fill="#fff"/>
+<path d="M10 45 L4 24 L18 24 L28 43Z" fill="#e8483a"/>
+<path d="M12 57 L3 67 L18 66 L24 59Z" fill="#c9d3e6"/>
+<path d="M8 55 H94" stroke="#e8483a" stroke-width="3.4" fill="none"/>
+<path d="M80 44 C87 44 92 47 94 51 L80 51Z" fill="#4aa8ff"/>
+<g fill="#4aa8ff" stroke-width="1.6">
+<circle cx="26" cy="50" r="2.4"/>
+<circle cx="35" cy="50" r="2.4"/>
+<circle cx="44" cy="50" r="2.4"/>
+<circle cx="53" cy="50" r="2.4"/>
+<circle cx="62" cy="50" r="2.4"/>
+<circle cx="71" cy="50" r="2.4"/>
+</g>
+<path d="M42 58 L28 84 L46 84 L66 59Z" fill="#d6dff0"/>
+<rect x="42" y="68" width="18" height="10" rx="5" fill="#8f9bb5"/>
+<rect x="58" y="69" width="3" height="8" fill="#5b6783" stroke="none"/>
+</g>
+</svg>Fancy family vacation</div>
+  </div>
+  <div class="pop card want" data-l="2" style="left:50px;top:505px;width:880px;text-align:center"><div class="big" style="font-size:32px">Tons of fun &amp; smiles — and you can live healthy without them!</div></div>
+</section>
+
+<!-- ===== SCENE 6: Why it matters / pay needs first ===== -->
+<section class="scene" data-scene="6">
+  <div class="pop slide-l bob" data-l="0" style="left:20px;top:200px;height:320px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-1.webp"></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="0" style="left:330px;top:40px;width:880px"><div class="h" style="font-size:34px">Why must we know the difference <span style="color:#c98a00;text-decoration:underline;text-decoration-color:#f6c33b;text-decoration-thickness:6px;text-underline-offset:7px">before</span> we hand over our cash?</div></div>
+  <!-- payday coins -->
+  <div class="pop card" data-l="1" style="left:330px;top:170px;width:880px;height:280px">
+    <div class="big" style="font-size:26px;color:var(--ink-soft)"> Payday: all your allowance…</div>
+    <div class="coin pop" data-l="1" data-c="1" data-d="0" style="left:60px;top:150px">$</div>
+    <div class="coin pop" data-l="1" data-c="1" data-d="0.5" style="left:130px;top:150px">$</div>
+    <div class="coin pop" data-l="1" data-c="1" data-d="1.0" style="left:200px;top:150px">$</div>
+    <div class="coin pop" data-l="1" data-c="1" data-d="1.5" style="left:270px;top:150px">$</div>
+    <div class="coin pop" data-l="1" data-c="1" data-d="2.0" style="left:340px;top:150px">$</div>
+    <div class="pop bob" data-l="1" data-c="1" data-d="4.2" style="left:540px;top:60px;height:190px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-devil-1.webp"></div>
+    <div class="pop bubble r" data-l="1" data-c="1" data-d="4.8" style="left:730px;top:30px;font-size:26px">Shiny WANTS, right now!</div>
+  </div>
+  <div class="pop card need" data-l="1" data-c="1" data-d="7.5" style="left:330px;top:470px;width:880px;display:flex;align-items:center;justify-content:space-between"><div class="big" style="font-size:28px">…and NOTHING left for 💧 water · 🍎 food · 🏠 home</div></div>
+</section>
+
+<!-- ===== SCENE 7: Wants aren't evil + secret order ===== -->
+<section class="scene" data-scene="7">
+  <div class="pop slide-r bob" data-l="0" style="right:30px;top:110px;height:280px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-devil-3.webp"></div>
+  <div class="pop slide-l bob" data-l="0" style="left:20px;top:200px;height:340px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-5.webp"></div>
+  <div class="pop card" data-l="0" data-d="0.4" style="left:360px;top:60px;width:640px"><div class="h" style="font-size:38px">Wants aren't evil!</div><div class="big" style="font-size:26px;margin-top:6px;color:var(--ink-soft)">I love fun wants too!</div></div>
+  <div class="pop" data-l="1" data-c="1" data-d="0.2" style="left:360px;top:230px;width:880px"><div class="tag" style="font-size:30px">The secret of real financial power:</div></div>
+  <div class="pop card need" data-l="1" data-c="1" data-d="2.6" style="left:360px;top:310px;width:280px;text-align:center;padding:14px"><div class="big" style="font-size:44px;line-height:1">1</div><div class="big" style="font-size:28px">Pay NEEDS first</div><div style="font-weight:800;font-size:20px;color:#14502d">groceries · housing · utilities</div></div>
+  <div class="pop big" data-l="1" data-c="2" data-d="0" style="left:652px;top:380px;font-size:60px;color:var(--gold);text-shadow:3px 3px 0 var(--ink)">➜</div>
+  <div class="pop card" data-l="1" data-c="3" data-d="0.8" style="left:720px;top:310px;width:240px;text-align:center;padding:14px"><div class="big" style="font-size:44px;line-height:1">2</div><div class="big" style="font-size:28px">Plan what's left</div></div>
+  <div class="pop big" data-l="1" data-c="3" data-d="2.8" style="left:968px;top:380px;font-size:60px;color:var(--gold);text-shadow:3px 3px 0 var(--ink)">➜</div>
+  <div class="pop card want" data-l="1" data-c="3" data-d="3.6" style="left:1030px;top:310px;width:200px;text-align:center;padding:14px"><div class="big" style="font-size:44px;line-height:1">3</div><div class="big" style="font-size:26px">Fun treats!</div></div>
+  <div class="pop bob" data-l="1" data-c="3" data-d="1.5" style="left:760px;top:455px;height:140px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-pig-1.webp"></div>
+</section>
+
+<!-- ===== SCENE 8: "I have everything" -> story intro ===== -->
+<section class="scene" data-scene="8">
+  <div class="pop bob" data-l="0" style="left:90px;top:210px;height:340px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-boy-3.webp"></div>
+  <div class="pop bubble" data-l="0" data-c="1" data-d="0.2" style="left:330px;top:90px;font-size:32px">I don't need to worry about Needs &amp; Wants… I can buy <u>everything</u>!</div>
+  <div class="pop slide-r bob" data-l="1" data-d="0.5" style="right:300px;top:230px;height:330px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-5.webp"></div>
+  <div class="pop card" data-l="1" data-d="1.8" style="right:60px;top:210px;width:230px;text-align:center;transform:rotate(-4deg);background:#2a1457;border-color:var(--gold)"><div class="h" style="font-size:22px;color:var(--gold)">STORY TIME</div><div class="big" style="font-size:24px;color:#fff;line-height:1.1;margin-top:6px">The Boy with the Golden Card</div></div>
+</section>
+
+<!-- ===== STORY 9a: Golden card ===== -->
+<section class="scene" data-scene="9">
+  <div class="fade" data-l="0" style="inset:0;background:radial-gradient(circle at 50% 60%,#f6c33b22,transparent 60%)"></div>
+  <div class="pop slide-u" data-l="0" data-d="0.2" style="left:40px;top:34px"><div class="tag" style="font-size:28px">Once upon a time…</div></div>
+  <div class="pop bob" data-l="0" data-d="0.8" style="left:100px;top:210px;height:370px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-boy-6.webp"></div>
+  <div class="pop spin" data-l="0" data-d="1.4" style="left:420px;top:180px;width:150px;height:96px;background:linear-gradient(135deg,#ffe27a,#f6c33b 50%,#c9921a);border:5px solid #8a5d08;border-radius:14px;box-shadow:6px 6px 0 #0007;display:flex;align-items:center;justify-content:flex-end;padding:10px;font-family:'Baloo 2';font-weight:800;color:#8a5d08;font-size:24px">GOLD</div>
+  <div class="pop big" data-l="0" data-c="0" data-d="3.2" style="left:420px;top:290px;font-size:38px;color:#fff;text-shadow:3px 3px 0 var(--ink)">Leo's golden card</div>
+  <div class="pop icn wt" data-l="0" data-c="1" data-d="0.7" style="left:640px;top:140px"><svg viewBox="0 0 100 100">
+<g stroke="#2a1457" stroke-width="3" stroke-linejoin="round">
+<path d="M50 16 V8" fill="none"/>
+<circle cx="50" cy="6" r="4" fill="#e8483a"/>
+<rect x="24" y="24" width="6" height="12" rx="2" fill="#f6c33b"/>
+<rect x="70" y="24" width="6" height="12" rx="2" fill="#f6c33b"/>
+<rect x="30" y="16" width="40" height="28" rx="9" fill="#b8c4d8"/>
+<rect x="35" y="23" width="30" height="13" rx="6" fill="#1c2a4d"/>
+<circle cx="44" cy="29.5" r="3.6" fill="#7be0ff" stroke="none"/>
+<circle cx="56" cy="29.5" r="3.6" fill="#7be0ff" stroke="none"/>
+<path d="M42 40 H58" fill="none" stroke-width="2.4"/>
+<rect x="44" y="44" width="12" height="5" fill="#6b7a96"/>
+<rect x="26" y="49" width="48" height="29" rx="7" fill="#3b82f6"/>
+<rect x="36" y="54" width="28" height="15" rx="3" fill="#fff"/>
+<circle cx="42" cy="61" r="3" fill="#e8483a" stroke-width="1.5"/>
+<circle cx="50" cy="61" r="3" fill="#f6c33b" stroke-width="1.5"/>
+<circle cx="58" cy="61" r="3" fill="#3fae4c" stroke-width="1.5"/>
+<rect x="13" y="52" width="11" height="24" rx="5.5" fill="#b8c4d8"/>
+<rect x="76" y="52" width="11" height="24" rx="5.5" fill="#b8c4d8"/>
+<circle cx="18.5" cy="79" r="5.5" fill="#f6c33b"/>
+<circle cx="81.5" cy="79" r="5.5" fill="#f6c33b"/>
+<rect x="32" y="78" width="14" height="12" fill="#6b7a96"/>
+<rect x="54" y="78" width="14" height="12" fill="#6b7a96"/>
+<rect x="27" y="88" width="21" height="8" rx="4" fill="#2a1457"/>
+<rect x="52" y="88" width="21" height="8" rx="4" fill="#2a1457"/>
+</g>
+</svg>Giant robot</div>
+  <div class="pop icn wt" data-l="0" data-c="2" data-d="0" style="left:830px;top:140px"><svg viewBox="0 0 100 100">
+<g stroke="#2a1457" stroke-width="3.5" stroke-linejoin="round">
+<rect x="22" y="22" width="18" height="8" rx="4" fill="#1c2a4d"/>
+<rect x="60" y="22" width="18" height="8" rx="4" fill="#1c2a4d"/>
+<path d="M20 36 C27 29 37 30 43 32 H57 C63 30 73 29 80 36 C90 46 95 67 89 77 C85 83 77 81 73 75 L67 67 H33 L27 75 C23 81 15 83 11 77 C5 67 10 46 20 36Z" fill="#4c6ef5"/>
+<path d="M26 38 C32 34 38 35 43 36 H57" fill="none" stroke="#a9b8ff" stroke-width="3" stroke-linecap="round"/>
+<path d="M22 51 H38 M30 43 V59" stroke="#1c2a4d" stroke-width="9" stroke-linecap="butt" fill="none"/>
+<circle cx="41" cy="60" r="6.5" fill="#1c2a4d"/>
+<circle cx="41" cy="60" r="3" fill="#6b7cff" stroke="none"/>
+<circle cx="59" cy="60" r="6.5" fill="#1c2a4d"/>
+<circle cx="59" cy="60" r="3" fill="#6b7cff" stroke="none"/>
+<circle cx="78" cy="43" r="4.2" fill="#f6c33b" stroke-width="2.4"/>
+<circle cx="70" cy="51" r="4.2" fill="#3fae4c" stroke-width="2.4"/>
+<circle cx="86" cy="51" r="4.2" fill="#e8483a" stroke-width="2.4"/>
+<circle cx="78" cy="59" r="4.2" fill="#4aa8ff" stroke-width="2.4"/>
+<circle cx="46" cy="46" r="2.2" fill="#fff" stroke-width="1.4"/>
+<circle cx="54" cy="46" r="2.2" fill="#fff" stroke-width="1.4"/>
+</g>
+</svg>Newest console</div>
+  <div class="pop icn wt" data-l="0" data-c="3" data-d="0.2" style="left:1020px;top:140px"><svg viewBox="0 0 100 100">
+<g stroke="#2a1457" stroke-width="3">
+<circle cx="18" cy="82" r="9.5" fill="#ff7bb0"/>
+<circle cx="15" cy="79" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="36" cy="82" r="9.5" fill="#7be0a0"/>
+<circle cx="33" cy="79" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="54" cy="82" r="9.5" fill="#f6c33b"/>
+<circle cx="51" cy="79" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="72" cy="82" r="9.5" fill="#4aa8ff"/>
+<circle cx="69" cy="79" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="88" cy="82" r="9.5" fill="#e8483a"/>
+<circle cx="85" cy="79" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="27" cy="66" r="9.5" fill="#b57bff"/>
+<circle cx="24" cy="63" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="45" cy="66" r="9.5" fill="#ff7bb0"/>
+<circle cx="42" cy="63" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="63" cy="66" r="9.5" fill="#7be0a0"/>
+<circle cx="60" cy="63" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="80" cy="66" r="9.5" fill="#f6c33b"/>
+<circle cx="77" cy="63" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="36" cy="50" r="9.5" fill="#4aa8ff"/>
+<circle cx="33" cy="47" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="54" cy="50" r="9.5" fill="#e8483a"/>
+<circle cx="51" cy="47" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="72" cy="50" r="9.5" fill="#b57bff"/>
+<circle cx="69" cy="47" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="45" cy="35" r="9.5" fill="#ff7bb0"/>
+<circle cx="42" cy="32" r="2.6" fill="#fff" stroke="none"/>
+<circle cx="63" cy="35" r="9.5" fill="#7be0a0"/>
+<circle cx="60" cy="32" r="2.6" fill="#fff" stroke="none"/>
+<path d="M72 28 L80 22 L82 32 Z M96 34 L88 40 L86 30 Z" fill="#ff7bb0" stroke-width="2.4"/>
+<ellipse cx="82" cy="31" rx="7" ry="5" fill="#fff" transform="rotate(-20 82 31)"/>
+<path d="M78 29 L86 33" stroke="#e8483a" stroke-width="2.4"/>
+<path d="M30 38 V10" stroke="#fff" stroke-width="5"/>
+<circle cx="30" cy="14" r="11" fill="#fff"/>
+<path d="M30 14 m0 0 a3 3 0 1 1 3 3 a6 6 0 1 1 -6 -6 a9 9 0 1 1 9 9" fill="none" stroke="#e8483a" stroke-width="3"/>
+</g>
+</svg>Mountain of candy</div>
+  <div class="pop card" data-l="1" data-d="0.3" style="left:620px;top:360px;width:600px;text-align:center"><div class="big" style="font-size:30px">Point at it… and it's <b>his</b>, instantly!</div><div class="big" style="font-size:24px;color:var(--ink-soft)">His room looked better than any toy store on earth.🎮</div></div>
+</section>
+
+<!-- ===== STORY 9b: bored -> buy ===== -->
+<section class="scene" data-scene="10">
+  <div class="pop bob" data-l="0" style="left:60px;top:230px;height:330px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-boy-3.webp"></div>
+  <div class="pop bubble" data-l="0" data-d="1" style="left:300px;top:110px">Bored… Upset…</div>
+  <div class="pop big" data-l="0" data-c="1" data-d="0.6" style="left:320px;top:230px"><div class="tag" style="font-size:36px">[ BUY ]</div></div>
+  <div class="pop card" data-l="1" data-c="0" data-d="0.8" style="left:540px;top:60px;width:300px;text-align:center"><div style="font-size:70px">🍬</div><div class="big" style="font-size:24px">Sweets instead of<br>warm family dinners</div></div>
+  <div class="pop card" data-l="1" data-c="1" data-d="0.2" style="left:870px;top:60px;width:300px;text-align:center"><div style="font-size:70px">📱</div><div class="big" style="font-size:24px">Glued to screens,<br>not running outside</div></div>
+  <div class="pop card" data-l="1" data-c="2" data-d="0.6" style="left:700px;top:300px;width:300px;text-align:center"><div style="font-size:70px">🙋</div><div class="big" style="font-size:24px">Ignoring friends<br>who ask him to play</div></div>
+  <div class="pop bubble r" data-l="2" data-c="1" data-d="0" style="left:380px;top:505px;font-size:30px;background:#fff">Why bother? I have everything I want right here.</div>
+</section>
+
+<!-- ===== STORY 9c: drone ===== -->
+<section class="scene" data-scene="11">
+  <div class="pop slide-u" data-l="0" data-d="0.3" style="left:50px;top:34px"><div class="title-xl" style="font-size:52px">Then, something strange happened…</div></div>
+  <div class="pop slide-u hov" data-l="1" style="left:430px;top:125px;width:330px;height:206px">
+    <svg viewBox="0 0 320 200" width="100%" height="100%">
+<defs>
+<linearGradient id="dbody" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#6b7cff"/>
+<stop offset="1" stop-color="#2a2f7a"/>
+</linearGradient>
+</defs>
+    <g stroke="#2a1457" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M130 92 L88 52 M190 92 L232 52 M124 104 L50 104 M196 104 L270 104" stroke-width="14" fill="none"/>
+      <path d="M130 92 L88 52 M190 92 L232 52 M124 104 L50 104 M196 104 L270 104" stroke="#5560a8" stroke-width="7" fill="none"/>
+      <path d="M126 122 L112 150 M194 122 L208 150 M98 150 H128 M192 150 H222" stroke-width="6" fill="none"/>
+      <path d="M126 122 L112 150 M194 122 L208 150 M98 150 H128 M192 150 H222" stroke="#f6c33b" stroke-width="2.5" fill="none"/>
+      <g stroke-width="0">
+<ellipse cx="88" cy="40" rx="46" ry="8" fill="#8ee8ff" opacity=".45">
+<animate attributeName="rx" values="46;30;46" dur=".22s" repeatCount="indefinite"/>
+</ellipse>
+      <ellipse cx="232" cy="40" rx="46" ry="8" fill="#8ee8ff" opacity=".45">
+<animate attributeName="rx" values="30;46;30" dur=".22s" repeatCount="indefinite"/>
+</ellipse>
+      <ellipse cx="50" cy="92" rx="46" ry="8" fill="#8ee8ff" opacity=".45">
+<animate attributeName="rx" values="46;30;46" dur=".22s" repeatCount="indefinite"/>
+</ellipse>
+      <ellipse cx="270" cy="92" rx="46" ry="8" fill="#8ee8ff" opacity=".45">
+<animate attributeName="rx" values="30;46;30" dur=".22s" repeatCount="indefinite"/>
+</ellipse>
+</g>
+      <g stroke-width="4" fill="#1c2040">
+<circle cx="88" cy="48" r="11"/>
+<circle cx="232" cy="48" r="11"/>
+<circle cx="50" cy="100" r="11"/>
+<circle cx="270" cy="100" r="11"/>
+</g>
+      <g fill="#f6c33b" stroke="none">
+<circle cx="88" cy="48" r="4"/>
+<circle cx="232" cy="48" r="4"/>
+<circle cx="50" cy="100" r="4"/>
+<circle cx="270" cy="100" r="4"/>
+</g>
+      <path d="M100 98 C100 70 220 70 220 98 C222 124 98 124 100 98Z" fill="url(#dbody)" stroke-width="5"/>
+      <path d="M112 102 C140 112 180 112 208 102" fill="none" stroke="#f6c33b" stroke-width="5"/>
+      <ellipse cx="160" cy="84" rx="30" ry="11" fill="#7be0ff" stroke-width="3.5"/>
+<ellipse cx="150" cy="80" rx="11" ry="3.5" fill="#fff" stroke="none" opacity=".85"/>
+      <circle cx="124" cy="110" r="4" fill="#ff4d4d" stroke-width="2"/>
+<circle cx="196" cy="110" r="4" fill="#3dff7a" stroke-width="2"/>
+      <rect x="146" y="118" width="28" height="10" rx="3" fill="#1c2040" stroke-width="3"/>
+      <circle cx="160" cy="136" r="17" fill="#1c2040" stroke-width="4"/>
+<circle cx="160" cy="136" r="10" fill="#4aa8ff" stroke-width="3"/>
+<circle cx="160" cy="136" r="4.5" fill="#0b1a3a" stroke="none"/>
+<circle cx="156" cy="132" r="2.4" fill="#fff" stroke="none"/>
+      <path d="M150 62 V50" stroke-width="3.5" fill="none"/>
+<circle cx="150" cy="48" r="3.5" fill="#e8483a" stroke-width="2"/>
+    </g>
+</svg>
+  </div>
+  <div class="pop bubble" data-l="1" data-d="0.9" style="left:800px;top:105px;width:400px;font-size:28px;line-height:1.1">The fastest, coolest drone ever made!</div>
+  <div class="pop bob" data-l="1" data-d="1" style="left:90px;top:260px;height:340px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-boy-4.webp"></div>
+  <div class="card pop" data-l="2" data-c="0" data-d="0.3" style="left:520px;top:380px;width:640px">
+    <div class="big" style="font-size:28px;margin-bottom:8px">Excitement meter</div>
+    <div style="height:34px;border:4px solid var(--ink);border-radius:20px;background:#fff;overflow:hidden"><div style="height:100%;width:100%;background:linear-gradient(90deg,#e8483a,#f6c33b,#2f9e5b);transform-origin:left;transition:transform 4s ease 1s" class="meter"></div></div>
+    <div class="big" style="font-size:24px;color:var(--ink-soft);margin-top:8px">Flew it for 10 seconds… set it down. No smile. He didn't care.</div>
+  </div>
+</section>
+
+<!-- ===== STORY 9d: hollow ===== -->
+<section class="scene" data-scene="12">
+  <div class="pop bob" data-l="0" style="left:430px;top:190px;height:230px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-boy-3.webp"></div>
+  <div class="pop" data-l="0" style="left:40px;top:270px;width:300px;height:240px">
+    <svg viewBox="0 0 300 280" width="100%" height="100%">
+<rect x="10" y="150" width="120" height="120" fill="#e8483a" stroke="#2a1457" stroke-width="6"/>
+<rect x="130" y="190" width="150" height="80" fill="#3b82f6" stroke="#2a1457" stroke-width="6"/>
+<rect x="40" y="70" width="100" height="80" fill="#f6c33b" stroke="#2a1457" stroke-width="6"/>
+<rect x="150" y="110" width="90" height="80" fill="#2f9e5b" stroke="#2a1457" stroke-width="6"/>
+</svg>
+  </div>
+  <div class="pop" data-l="0" data-c="0" data-d="1.5" style="left:30px;top:180px;width:340px;text-align:center"><div class="tag" style="font-size:26px">A room packed with treasures</div></div>
+  <div class="pop card" data-l="0" data-c="0" data-d="5.0" style="left:760px;top:36px;width:470px;text-align:center"><div class="big" style="font-size:34px">A heavy, hollow ache</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="0.8" style="left:760px;top:150px;width:470px"><div class="big" style="font-size:26px">🎮 Endless games — <b>no one to laugh with</b></div></div>
+  <div class="pop card" data-l="1" data-c="0" data-d="0.4" style="left:760px;top:290px;width:470px"><div class="big" style="font-size:26px">📱 Tons of gadgets — <b>body sluggish &amp; tired</b></div></div>
+  <div class="pop card need" data-l="2" data-c="0" data-d="3.0" style="left:60px;top:525px;width:1160px"><div class="big" style="font-size:28px;text-align:center">He had starved what he truly needed:</div></div>
+  <div class="pop" data-l="2" data-c="1" data-d="0" style="left:260px;top:430px;font-size:64px">🌬️</div>
+  <div class="pop" data-l="2" data-c="2" data-d="0" style="left:420px;top:430px;font-size:64px">🥦</div>
+  <div class="pop" data-l="2" data-c="3" data-d="0" style="left:580px;top:430px;font-size:64px">🧑‍🤝‍🧑</div>
+  <div class="pop" data-l="2" data-c="4" data-d="0" style="left:740px;top:430px;font-size:64px">🤗</div>
+</section>
+
+<!-- ===== STORY 9e: secret ===== -->
+<section class="scene" data-scene="13">
+  <div class="pop slide-l bob" data-l="0" style="left:30px;top:170px;height:380px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-6.webp"></div>
+  <div class="pop" data-l="0" data-d="0.3" style="left:430px;top:60px"><div class="tag" style="font-size:30px">Leo learned a huge secret…</div></div>
+  <div class="pop card pulse" data-l="0" data-c="1" data-d="0" style="left:430px;top:170px;width:780px;text-align:center;background:var(--parch);padding:36px"><div class="h" style="font-size:46px">You can buy a <span style="color:var(--want)">mountain of things</span>,</div><div class="h" style="font-size:46px;margin-top:10px">but you can't buy a <span style="color:#d6336c">feeling</span>. 💗</div></div>
+  </section>
+
+<!-- ===== STORY 9f: the park ===== -->
+<section class="scene" data-scene="14">
+  <div class="fade" data-l="0" style="inset:0;background:linear-gradient(#2a1457,#2a145700 40%),linear-gradient(0deg,#2f7a3a 0,#2f7a3a 22%,transparent 22%)"></div>
+  <div class="pop big" data-l="0" data-d="0.2" style="left:50px;top:40px"><div class="tag" style="font-size:30px">He pushed the shiny boxes aside…</div></div>
+  <div class="pop slide-l" data-l="0" data-c="0" data-d="3.3" style="left:60px;top:200px;font-size:110px">🚪</div>
+  <div class="pop slide-l bob" data-l="1" data-d="0.3" style="left:230px;top:170px;height:290px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-boy-6.webp"></div>
+  <div class="pop slide-r bob" data-l="0" data-c="1" data-d="0.6" style="right:60px;top:160px;height:320px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-friends-2.webp"></div>
+  <div class="pop bubble" data-l="1" data-c="2" data-d="0" style="left:470px;top:110px;font-size:32px">Need an extra player? ⚽</div>
+  <div class="pop big" data-l="2" data-c="0" data-d="1.2" style="left:470px;top:230px;font-size:60px">😄 ➜ ⚽</div>
+  <div class="pop card" data-l="2" data-c="1" data-d="0" style="left:260px;top:510px;width:760px;text-align:center"><div class="big" style="font-size:30px">A spark of <b>real joy</b> — the one thing money could never buy.</div></div>
+</section>
+
+<!-- ===== SCENE 15: Challenge ===== -->
+<section class="scene" data-scene="15">
+  <div class="pop slide-l bob" data-l="0" style="left:20px;top:190px;height:370px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-3.webp"></div>
+  <div class="pop" data-l="0" data-d="0.2" style="left:380px;top:36px"><div class="title-xl" style="font-size:52px">Put your powers<br>to the test!</div></div>
+  <div class="pop card" data-l="1" data-d="0.2" style="left:380px;top:230px;width:360px;transform:rotate(-2deg)">
+    <div class="h" style="font-size:24px;margin-bottom:8px"> Activity #3</div>
+    <div class="big" style="font-size:26px;display:flex;justify-content:space-between"><span>Water</span><span class="pop" data-l="1" data-c="0" data-d="3.0" style="position:static;color:var(--need);font-size:32px">N</span></div>
+    <div class="big" style="font-size:26px;display:flex;justify-content:space-between"><span>Video game</span><span class="pop" data-l="1" data-c="1" data-d="0.1" style="position:static;color:var(--want);font-size:32px">W</span></div>
+    <div class="big" style="font-size:26px;display:flex;justify-content:space-between"><span>Medicine</span><span class="pop" data-l="1" data-c="1" data-d="0.8" style="position:static;color:var(--need);font-size:32px">N</span></div>
+    <div class="big" style="font-size:26px;display:flex;justify-content:space-between"><span>Sneakers</span><span class="pop" data-l="1" data-c="1" data-d="1.5" style="position:static;color:var(--want);font-size:32px">W</span></div>
+  </div>
+  <div class="pop card" data-l="2" data-c="0" data-d="2.5" style="left:790px;top:200px;width:420px;text-align:center;background:#150a30;border-color:var(--gold);box-shadow:8px 8px 0 #f6c33b55">
+    <div class="h gold" style="font-size:26px"> ARCADE CHALLENGE</div>
+    <div class="big white" style="font-size:26px;margin:10px 0">Needs vs. Wants</div>
+    <div style="position:relative;height:170px;border:4px solid var(--gold);border-radius:12px;overflow:hidden;background:#2a1457">
+      <div class="pop" data-l="2" data-c="2" data-d="0.3" style="left:18px;top:14px;font-size:46px;position:absolute">🍎</div>
+      <div class="pop" data-l="2" data-c="2" data-d="1.2" style="left:95px;top:70px;font-size:46px;position:absolute">🎮</div>
+      <div class="pop" data-l="2" data-c="2" data-d="2.0" style="left:185px;top:18px;font-size:46px;position:absolute">💧</div>
+      <div class="pop" data-l="2" data-c="2" data-d="2.8" style="left:268px;top:84px;font-size:46px;position:absolute">👟</div>
+    </div>
+    <div class="pop big" data-l="2" data-c="3" data-d="1.6" style="position:static;color:var(--gold);font-size:34px;margin-top:10px"> NEW HIGH SCORE!</div>
+  </div>
+</section>
+
+<!-- ===== SCENE 16: Next video teaser ===== -->
+<section class="scene" data-scene="16">
+  <div class="pop slide-l bob" data-l="0" style="left:20px;top:210px;height:340px"><img class="spr" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-wiz-0.webp"></div>
+  <div class="pop" data-l="0" data-d="0.3" style="left:380px;top:40px"><div class="tag" style="font-size:28px">Up next</div></div>
+  <div class="pop" data-l="0" data-c="0" data-d="2.8" style="left:380px;top:100px"><div class="title-xl" style="font-size:56px">Save, Spend,<br>Share &amp; <span class="gold">Invest</span></div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="0.2" style="left:380px;top:270px;width:200px;text-align:center"><div style="height:150px"><img class="spr" style="margin:0 auto" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-pig-0.webp"></div><div class="big" style="font-size:30px">SAVE</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="0.9" style="left:605px;top:270px;width:200px;text-align:center"><div style="height:150px"><img class="spr" style="margin:0 auto" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-devil-1.webp"></div><div class="big" style="font-size:30px">SPEND</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="1.5" style="left:830px;top:270px;width:200px;text-align:center"><div style="height:150px;font-size:110px;line-height:150px">💗</div><div class="big" style="font-size:30px">SHARE</div></div>
+  <div class="pop card" data-l="0" data-c="1" data-d="2.1" style="left:1055px;top:270px;width:200px;text-align:center"><div style="height:150px"><img class="spr" style="margin:0 auto" src="https://cdn.shopify.com/s/files/1/0900/3568/3619/files/nw-plant-0.webp"></div><div class="big" style="font-size:30px">INVEST</div></div>
+  <div class="pop big" data-l="1" data-c="0" data-d="0.4" style="left:380px;top:525px;font-size:34px;color:var(--gold);text-shadow:3px 3px 0 var(--ink)">The four main destinations for your dollars!</div>
+</section>
+
+<div id="cap"></div>
+<canvas id="fx" width="1280" height="720"></canvas>
+<div id="start"><div class="title-xl" style="font-size:58px;text-align:center">Needs vs. Wants</div><div class="startbtn">Start</div></div>
+<div id="bar"><button id="pp">⏸ Pause</button><button id="rs">↺ Restart</button><div id="prog"><div id="fill"></div></div><div id="time">0:00</div><button id="snd">Sound</button><button id="cc">CC</button></div>
+</div></div>
+</div><audio id="aud" preload="auto"></audio>
+<script>
+
+/* ============ SCRIPT (one entry per narrated line group) ============ */
+const AUDIO_SRC = "https://cdn.shopify.com/s/files/1/0900/3568/3619/files/The_Ultimate_Clash_Needs_vs_Wants.mp3?v=1791733973";   // narration MP3 (Shopify Files)
+const AUDIO_BACKUP = "https://github.com/andrewlarsen92-tech/JK-Rowling-Audio-Script-/raw/refs/heads/main/The%20Ultimate%20Clash,%20Needs%20vs%20Wants.mp3";   // optional 2nd link (e.g. the MP3 uploaded to Shopify Files) used if the first fails
+const CUES = [0.0, 2.16, 8.33, 15.62, 24.9, 29.39, 32.02, 41.33, 51.89, 61.08, 71.13, 76.41, 87.5, 96.59,
+ 102.83, 115.12, 126.51, 129.87, 145.69, 155.73, 159.8, 173.16, 177.44, 186.41, 196.97, 202.58, 205.7, 216.63,
+ 223.34, 230.69, 240.68, 252.89, 261.61, 271.84, 278.84, 290.7, 298.74, 309.2, 323.25,
+ 329.25];  // line start times (sec) measured from the recording
+const CT = [0.0, 2.16, 4.4, 8.33, 11.21, 15.62, 19.41, 24.9, 29.39, 32.02, 38.67, 41.33, 51.89, 61.08, 63.19,
+ 64.83, 67.06, 68.94, 71.13, 76.41, 87.5, 90.4, 92.68, 94.07, 96.59, 102.83, 107.17, 115.12, 116.37, 126.51,
+ 129.87, 133.03, 137.56, 140.45, 145.69, 149.03, 155.73, 159.8, 164.95, 167.17, 168.97, 170.82, 173.16, 177.44,
+ 183.13, 186.41, 189.94, 193.5, 196.97, 197.85, 199.13, 202.58, 205.7, 211.29, 216.63, 218.33, 219.98, 223.34,
+ 230.69, 235.0, 240.68, 246.1, 247.29, 248.74, 250.48, 252.89, 255.99, 258.51, 261.61, 268.33, 271.84, 274.96,
+ 276.88, 278.84, 286.72, 290.7, 294.28, 298.74, 305.55, 309.2, 315.55, 317.23, 319.58, 323.25, 325.95,
+ 329.25];   // start time of every pause-separated phrase
+const LC = [0, 1, 3, 5, 7, 8, 9, 11, 12, 13, 18, 19, 20, 24, 25, 27, 29, 30, 34, 36, 37, 42, 43, 45, 48, 51,
+ 52, 54, 57, 58, 60, 65, 68, 70, 73, 75, 77, 79, 83, 85];   // first phrase index of each line
+const AUDIO_DUR = 333.4;
+const WPS = 2.35;       // estimated speaking speed (words/sec) when no audio is attached
+const LINES = [
+ [0,"Hey there, Future Money Masters!"],
+ [0,"How was that bartering game? Kind of tough and confusing to swap chickens for bread, right?"],
+ [0,"But it taught us something super important: money was created to make our lives so much easier!"],
+ [1,"Before we dive into today's main event, let's celebrate! What three cool ways did you discover that your family uses money every week?"],
+ [1,"And were you able to sort all those goods and services without getting tricked?"],
+ [1,"That is awesome work!"],
+ [2,"Alright, grab your wizard hats and get ready, because we are stepping right into the ultimate money arena: Needs versus Wants!"],
+ [3,"Mastering the distinction between these two powerful forces is like equipping your brain with a magical armor shield against impulse buying and wasteful spending habits."],
+ [4,"Needs are the absolute essentials that human beings must have to survive, stay healthy, and live safely every single day."],
+ [4,"Think about fresh drinking water, nourishing food, a secure roof over your head, warm clothes for winter, and life-saving medicine."],
+ [4,"Without these critical basics, living a healthy life becomes impossible!"],
+ [5,"Wants are the extra items, treats, and gadgets that people enjoy having because they are fun, exciting, or stylish, but you do not actually require them to survive."],
+ [5,"This includes delicious ice cream sundaes, brand-new video game consoles, flashy sneakers, or fancy family vacations."],
+ [5,"They bring tons of fun and smiles, but you can live a completely healthy life without them!"],
+ [6,"Now, pause and think like a Wealth Wizard for a second... Why is it so crucial to know the difference between our needs and our wants before we hand over our hard-earned cash?"],
+ [6,"It's simple! If you spend all your allowance or earnings on shiny wants the second you get paid, you won't have any money remaining for the essential needs that keep you safe and healthy."],
+ [7,"Now, don't get me wrong, wants aren't evil!"],
+ [7,"I love spending money on fun wants too. But the secret to real financial power is paying for your needs first, like groceries, housing, and utilities, and then thoughtfully planning how much is left over for fun treats."],
+ [8,"Now, some of you might be thinking, well... I don't need to worry about Needs and Wants, I have plenty and can buy all the things I want in the world!"],
+ [8,"Well, let me tell you an interesting story."],
+ [9,"Once upon a time, there was a kid named Leo who had a golden card. If he pointed at a giant robot, the newest gaming console, or a mountain of candy, it was his instantly."],
+ [9,"His bedroom looked better than any toy store on earth."],
+ [10,"Whenever Leo felt bored or upset, he didn't stop to think about what was actually wrong. He just clicked buy on another want."],
+ [10,"He skipped warm dinners with his family to eat sweets, stayed glued to screens instead of running outside, and ignored his friends whenever they asked him to play."],
+ [10,"He thought, why bother? I have everything I want right here."],
+ [11,"Then, something strange happened."],
+ [11,"One day, the fastest, coolest drone ever made was delivered to his house. Leo opened the box, flew it for ten seconds, and set it down."],
+ [11,"He didn't smile. He didn't care. The excitement was completely gone."],
+ [12,"Sitting in a room packed to the ceiling with treasures, Leo felt a heavy, hollow ache inside. He had endless games, but no one to laugh with."],
+ [12,"He had tons of gadgets, but his body felt sluggish and tired."],
+ [12,"By chasing only what he wanted, he had starved what he truly needed: fresh air, good food, genuine friends, and real hugs."],
+ [13,"Leo learned a huge secret: You can buy a mountain of things, but you can't buy a feeling."],
+ [14,"He pushed the shiny boxes aside, opened his bedroom door, and walked out to the local park. A group of kids was kicking a beat-up soccer ball around."],
+ [14,"Leo didn't bring any of his expensive toys; he just walked up and asked, need an extra player?"],
+ [14,"When they smiled and passed him the ball, Leo felt a spark of real joy for the first time in months, the one thing money could never buy."],
+ [15,"Okay, it's time to put your powers to the test! Head right over to Activity number three in the next lesson."],
+ [15,"Carefully analyze the list of everyday items and label each one with an N if it's an absolute Need, or a W if it's a luxury Want."],
+ [15,"Once you've completed your worksheet, launch into the interactive Needs versus Wants arcade challenge! Sharpen your reflexes, spot the items coming down the line, and see if you can score a record high score!"],
+ [16,"When you're ready, jump into the next video, Save, Spend, Share and Invest,"],
+ [16,"where we'll unlock the four main destinations for your dollars!"]
+];
+
+</script>
+<script>
+
+/* Scene->line mapping is shown by LINES[i][0]. Within a scene, "data-l" is the line index (0..n) inside that scene. */
+(function(){
+ const stage=document.getElementById('stage');
+ const wrapEl=document.getElementById('wrap');
+ function fit(){stage.style.transform='scale('+(wrapEl.clientWidth/1280)+')';}
+ new ResizeObserver(fit).observe(wrapEl);addEventListener('resize',fit);fit();
+
+ const aud=new Audio();aud.preload='auto';   // created in code so it still works if the page builder strips <audio> tags
+ let audioFailed=false,soft=false,srcIdx=0,stall=0,errNote='';
+ const SRCS=[AUDIO_SRC].concat(AUDIO_BACKUP?[AUDIO_BACKUP]:[]);
+ const useAudio=!!AUDIO_SRC;
+ if(useAudio){
+   aud.src=SRCS[0];
+   aud.addEventListener('error',()=>{
+     errNote='E'+(aud.error?aud.error.code:'?');
+     srcIdx++;
+     if(srcIdx<SRCS.length){aud.src=SRCS[srcIdx];aud.load();if(playing){const q=aud.play();if(q&&q.catch)q.catch(()=>{});}}
+     else{audioFailed=true;soft=false;}
+   });
+   aud.addEventListener('loadedmetadata',()=>{if(t>1&&Math.abs(aud.currentTime-t)>1)aud.currentTime=t;});
+   aud.addEventListener('playing',()=>{if(audioFailed&&soft){audioFailed=false;soft=false;stall=0;errNote='';if(Math.abs(aud.currentTime-t)>1)aud.currentTime=t;}});
+ }
+ const GAP=0.55;
+ const wc=t=>t.split(/\s+/).length;
+ const starts=[],ends=[];let acc=0;
+ LINES.forEach((l,i)=>{ starts.push(CUES&&CUES.length===LINES.length?CUES[i]:acc); const d=wc(l[1])/WPS+GAP; acc+=d; });
+ LINES.forEach((l,i)=>{ ends.push(i<LINES.length-1?starts[i+1]:starts[i]+wc(l[1])/WPS+2.5); });
+ const TOTAL=(CUES&&AUDIO_SRC)?AUDIO_DUR:ends[ends.length-1];
+
+ const scenes=[...document.querySelectorAll('.scene')];
+ const sceneLines=scenes.map((_,s)=>LINES.map((l,i)=>[l[0],i]).filter(x=>x[0]===s).map(x=>x[1]));
+ const sceneStart=sceneLines.map(a=>starts[a[0]]);
+ // element timing
+ const els=[];
+ scenes.forEach((sc,s)=>{
+   sc.querySelectorAll('[data-l]').forEach(el=>{
+     const l=+el.dataset.l,d=+(el.dataset.d||0);
+     const gi=sceneLines[s][Math.min(l,sceneLines[s].length-1)];
+     const lineEnd=gi<LINES.length-1?starts[gi+1]:TOTAL;
+     let t0;
+     if(el.dataset.c!==undefined&&CUES){t0=CT[LC[gi]+(+el.dataset.c)]+d;}
+     else{const est=wc(LINES[gi][1])/WPS+GAP;const ratio=CUES?Math.max(.6,Math.min(1.5,(lineEnd-starts[gi])/est)):1;t0=starts[gi]+d*ratio;}
+     if(CUES)t0=Math.max(starts[gi],Math.min(t0,lineEnd-0.35));
+     els.push({el,s,t:t0});
+   });
+ });
+ // scene-specific continuous effects (meter, confetti) keyed by scene
+ const meter=document.querySelector('.meter');
+ const fx=document.getElementById('fx'),ctx=fx.getContext('2d');
+ let parts=[],confettiScenes={1:starts[LINES.findIndex(l=>l[0]===1)]+0,14:0};
+ function burst(){for(let i=0;i<110;i++)parts.push({x:640,y:300,vx:(Math.random()-.5)*16,vy:-Math.random()*14-4,g:.35,c:['#f6c33b','#e8543f','#2f9e5b','#3b82f6','#ff7bb0','#fff'][i%6],s:6+Math.random()*8,r:Math.random()*6,l:140+Math.random()*60});}
+ function tickfx(){ctx.clearRect(0,0,1280,720);parts=parts.filter(p=>p.l>0);parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.r+=.2;p.l--;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.globalAlpha=Math.min(1,p.l/40);ctx.fillRect(-p.s/2,-p.s/3,p.s,p.s*.6);ctx.restore();});requestAnimationFrame(tickfx);}tickfx();
+ const CK=(i,k)=>CUES?CT[LC[i]+k]:starts[i]+k*3;
+ const bursts=[ {t:starts[5]+0.4,done:false}, {t:CK(34,1)+0.3,done:false}, {t:CK(37,3)+1.8,done:false} ];
+
+ // playback clock
+ let t=0,playing=false,last=0,capOn=true;
+ const cap=document.getElementById('cap'),fill=document.getElementById('fill'),timeEl=document.getElementById('time'),pp=document.getElementById('pp');
+ const prog=document.getElementById('prog');
+ starts.forEach((_,i)=>{}); // ticks at scene starts
+ sceneStart.forEach((st,i)=>{if(i===0)return;const k=document.createElement('div');k.className='tick';k.style.left=(st/TOTAL*100)+'%';prog.appendChild(k);});
+
+ function render(){
+   // scene
+   let s=0;for(let i=0;i<scenes.length;i++){if(t>=sceneStart[i]-0.01)s=i;}
+   scenes.forEach((sc,i)=>sc.classList.toggle('active',i===s));
+   els.forEach(o=>{const on=(o.s===s)&&t>=o.t;o.el.classList.toggle('on',on);});
+   // caption
+   let li=0;for(let i=0;i<LINES.length;i++){if(t>=starts[i]-0.01)li=i;}
+   cap.textContent=LINES[li][1];cap.classList.toggle('show',capOn&&playing||capOn&&t>0);
+   // meter
+   if(meter){meter.style.transform=(s===11&&t>=CK(27,0)+0.2)?'scaleX(0.04)':'scaleX(1)';}
+   // progress
+   fill.style.width=(t/TOTAL*100)+'%';
+   const m=Math.floor(t/60),sec=Math.floor(t%60);timeEl.textContent=(audioFailed?'no sound'+(errNote?' ('+errNote+') ':' '):(useAudio&&playing&&stall>1.5?'loading audio ':''))+m+':'+String(sec).padStart(2,'0')+' / '+Math.floor(TOTAL/60)+':'+String(Math.floor(TOTAL%60)).padStart(2,'0');
+ }
+ function frame(ts){
+   if(playing){
+     if(useAudio&&!audioFailed){
+       if(!aud.paused&&aud.readyState>=2&&aud.currentTime>0){t=aud.currentTime;stall=0;}
+       else{stall+=(ts-last)/1000;if(stall>12){audioFailed=true;soft=true;}}
+     }else{t+=(ts-last)/1000;}
+     last=ts;
+     bursts.forEach(b=>{if(!b.done&&t>=b.t){b.done=true;burst();}});
+     if(t>=TOTAL-0.02||(useAudio&&!audioFailed&&aud.ended)){t=Math.min(t,TOTAL);playing=false;pp.textContent='▶ Play';}
+     render();
+   }
+   requestAnimationFrame(frame);
+ }
+ function play(){if(t>=TOTAL-0.05){seek(0);}playing=true;last=performance.now();pp.textContent='⏸ Pause';if(useAudio){const p=aud.play();if(p&&p.catch)p.catch(e=>{if(e&&(e.name==='NotAllowedError')){errNote='blocked';audioFailed=true;soft=true;}});}}
+ function pause(){playing=false;pp.textContent='▶ Play';if(useAudio)aud.pause();}
+ function seek(x){t=Math.max(0,Math.min(TOTAL,x));if(useAudio&&!audioFailed)aud.currentTime=t;bursts.forEach(b=>b.done=t>b.t);render();}
+ pp.onclick=()=>playing?pause():play();
+ document.getElementById('rs').onclick=()=>{seek(0);play();};
+ const snd=document.getElementById('snd');
+ snd.onclick=()=>{
+   if(audioFailed||!useAudio){ if(!useAudio)return; audioFailed=false;soft=false;srcIdx=0;stall=0;errNote='';aud.muted=false;snd.textContent='Sound';aud.src=SRCS[0];aud.load();aud.currentTime=t;if(playing){const q=aud.play();if(q&&q.catch)q.catch(()=>{});} }
+   else{aud.muted=!aud.muted;snd.textContent=aud.muted?'Muted':'Sound';}
+ };
+ document.getElementById('cc').onclick=()=>{capOn=!capOn;cap.classList.toggle('show',capOn);};
+ prog.onclick=e=>{const r=prog.getBoundingClientRect();seek((e.clientX-r.left)/r.width*TOTAL);};
+ document.getElementById('start').onclick=function(){this.classList.add('hide');play();};
+ let nwlHover=false;const nwlEl=document.getElementById('nwl');nwlEl.addEventListener('mouseenter',()=>nwlHover=true);nwlEl.addEventListener('mouseleave',()=>nwlHover=false);
+ addEventListener('keydown',e=>{
+   if(!nwlHover)return;
+   if(e.code==='Space'){e.preventDefault();playing?pause():play();}
+   if(e.code==='ArrowRight'){const n=sceneStart.find(x=>x>t+0.1);if(n!==undefined)seek(n);}
+   if(e.code==='ArrowLeft'){const p=[...sceneStart].reverse().find(x=>x<t-1.5);seek(p===undefined?0:p);}
+ });
+ render();requestAnimationFrame(frame);
+})();
+
+</script>
